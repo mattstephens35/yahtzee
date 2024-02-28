@@ -35,8 +35,7 @@ paths:
           'application/json':
             schema:
                 $ref: '#/components/schemas/PlayerRequestSchema'
-            example:
-              name: 'foo'
+             
       responses:
         '204':
           description: Name set successfully
