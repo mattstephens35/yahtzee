@@ -1,6 +1,19 @@
 name: Yahtzee testing workflow
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      tests:
+        required: true
+        default: all
+        type: choice
+        description: Who to greet
+        options: 
+        - all
+        - playerName
+        - die
+        - smoke
+
 jobs: 
   api-tests:
     runs-on: ubuntu-latest
@@ -10,7 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Build and start the "express-app" and "react-app" containers in detached mode to avoid blocking the workflow.
       - name: build application image
         run: docker build -t yahtzee:latest .
 
@@ -20,9 +32,18 @@ jobs:
       - name: Install dependencies
         working-directory: ./yahtzee-tests
         run: npm ci
-      - name: Run Playwright tests
+      
+      - name: Run All Playwright tests
         working-directory: ./yahtzee-tests
+        if: github.event.inputs.tests == 'all'
         run: npx playwright test
+
+      - name: Run @Tagged Playwright tests
+        working-directory: ./yahtzee-tests
+        if: github.event.inputs.tests != 'all'
+        run: npx playwright test --grep "${{ github.event.inputs.tests }}"   
+        
+      
       - uses: actions/upload-artifact@v4
         if: always()
         with:
