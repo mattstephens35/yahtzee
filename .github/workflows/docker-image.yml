@@ -15,7 +15,7 @@ jobs:
         run: docker build -t yahtzee:latest .
 
       - name: run application
-        run: docker run -it -p 8080:8080 yahtzee:latest
+        run: docker run -t -it -p 8080:8080 yahtzee:latest
 
       # Build the Docker image for E2E tests.
       - name: Build E2E Docker image
