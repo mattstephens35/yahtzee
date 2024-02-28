@@ -2,7 +2,7 @@ name: Yahtzee testing workflow
 
 on: workflow_dispatch
 jobs: 
-  e2e-tests:
+  api-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -15,12 +15,7 @@ jobs:
         run: docker build -t yahtzee:latest .
 
       - name: run application
-        run:  docker run -t -p 8080:8080 yahtzee:latest
-
-      # Build the Docker image for E2E tests.
-      - name: Build E2E Docker image
-        working-directory: e2e
-        run: docker build -t playwright-tests .
+        run:  docker run -d -p 8080:8080 yahtzee:latest
 
       - name: Install dependencies
         working-directory: ./yahtzee-tests
