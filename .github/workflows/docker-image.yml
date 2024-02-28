@@ -1,0 +1,36 @@
+name: Yahtzee testing workflow
+
+on: workflow_dispatch
+jobs: 
+  e2e-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Checkout the this repository.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Build and start the "express-app" and "react-app" containers in detached mode to avoid blocking the workflow.
+      - name: build application image
+        run: docker build -t yahtzee:latest .
+
+      - name: run application
+        run: docker run -it -p 8080:8080 yahtzee:latest
+
+      # Build the Docker image for E2E tests.
+      - name: Build E2E Docker image
+        working-directory: e2e
+        run: docker build -t playwright-tests .
+
+      - name: Install dependencies
+        working-directory: ./yahtzee-tests
+        run: npm ci
+      - name: Run Playwright tests
+        working-directory: ./yahtzee-tests
+        run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: yahtzee-tests/playwright-report/
+      
