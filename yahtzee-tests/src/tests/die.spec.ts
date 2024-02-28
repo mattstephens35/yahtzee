@@ -7,7 +7,7 @@ test.describe('/die endpoints', () => {
   const validDieIds: number[] = [1, 2, 3, 4, 5];
 
   for (let i = 0; i < validDieIds.length; i++) {
-    test(`PUT and GET /die/${validDieIds[i]} by integer @smoke @playerName`, async ({
+    test(`PUT and GET /die/${validDieIds[i]} by integer @smoke @die`, async ({
       request
     }) => {
       const rndInt = await getRandomDieValue();
@@ -27,7 +27,7 @@ test.describe('/die endpoints', () => {
   }
 
   for (let i = 0; i < validDieIds.length; i++) {
-    test(`PUT and GET /die/${validDieIds[i]} by float @smoke @playerName`, async ({
+    test(`PUT and GET /die/${validDieIds[i]} by float @smoke @die`, async ({
       request
     }) => {
       const rndInt = await getRandomDieValue();
@@ -47,7 +47,7 @@ test.describe('/die endpoints', () => {
   }
 
   for (let i = 0; i < validDieIds.length; i++) {
-    test(`PUT and GET /die/${validDieIds[i]} by word @smoke @playerName`, async ({
+    test(`PUT and GET /die/${validDieIds[i]} by word @smoke @die`, async ({
       request
     }) => {
       const rndInt = await getRandomDieValue();
@@ -67,7 +67,7 @@ test.describe('/die endpoints', () => {
   }
 
   for (let i = 0; i < validDieIds.length; i++) {
-    test(`PUT and GET /die/${validDieIds[i]} by dots @smoke @playerName`, async ({
+    test(`PUT and GET /die/${validDieIds[i]} by dots @smoke @die`, async ({
       request
     }) => {
       const rndInt = await getRandomDieValue();
@@ -92,7 +92,7 @@ test.describe('/die endpoints', () => {
     { id: -1, failureMessage: 'Die ID must be an integer between 1 and 5' }]
 
   for (let i = 0; i < invalidGetIds.length; i++) {
-    test(`GET /die/${invalidGetIds[i].id} with invalid values @playerName`, async ({
+    test(`GET /die/${invalidGetIds[i].id} with invalid values @die`, async ({
       request
     }) => {
 
@@ -109,7 +109,7 @@ test.describe('/die endpoints', () => {
     { id: -1, failureMessage: 'Die ID must be between 1 and 5' }]
 
   for (let i = 0; i < invalidPutIds.length; i++) {
-    test(`PUT /die with invalid id: ${invalidPutIds[i].id} Bad Request @playerName`, async ({
+    test(`PUT /die with invalid id: ${invalidPutIds[i].id} Bad Request @die`, async ({
       request
     }) => {
       const invalidIds = [
@@ -136,7 +136,7 @@ test.describe('/die endpoints', () => {
     { value: -1, failureMessage: 'Die value must be between 1 and 6' }]
 
   for (let i = 0; i < invalidPutIds.length; i++) {
-    test(`PUT /die with invalid value: ${invalidPutValues[i].value} Bad Request @playerName`, async ({
+    test(`PUT /die with invalid value: ${invalidPutValues[i].value} Bad Request @die`, async ({
       request
     }) => {
       const rndInt = await getRandomDieValue();
@@ -152,7 +152,7 @@ test.describe('/die endpoints', () => {
     });
   }
 
-  test(`PUT /die with unauthorized credentials @playerName`, async ({
+  test(`PUT /die with unauthorized credentials @die`, async ({
     request
   }) => {
     const requestData = {
