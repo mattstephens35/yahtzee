@@ -2,7 +2,7 @@
 ## Running Tests
 run from `yahtzee-tests` folder
 `npx playwright test`
-`npx playwright test --grep @api`
+`npx playwright test --grep "@playername"`
 
 tags available:
 @playername
