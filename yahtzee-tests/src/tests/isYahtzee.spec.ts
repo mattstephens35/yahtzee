@@ -1,7 +1,4 @@
-import { test, expect } from '@playwright/test';
-import { getDieById, getDieByIdDots, getDieByIdFloat, getDieByIdInteger, getDieByIdWord, putDieById } from '../resources/die.resources';
-import { dieType } from '../enums/dieType';
-import { returnStatus } from '../enums/returnStatus';
+import { test } from '@playwright/test';
 
 test.describe('/isYahtzee endpoints', () => {
   // PUT dice 1-5 to be the same value, GET isYahtzee, expect value to be true 

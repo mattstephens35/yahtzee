@@ -1,17 +1,19 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from "../fixtures/fixtures";
 import { getPlayerName, putPlayerName } from '../resources/playerName.resources';
 import { v4 as uuidv4 } from 'uuid';
 import { returnStatus } from '../enums/returnStatus';
 
 test.describe('/playerName endpoints', () => {
   test('PUT and GET /playerName @smoke @playerName', async ({
-    request
+    request,
+    apiLogin
   }) => {
     const name = `Test Name ${uuidv4()}`;
     const requestData = {
       'name': name,
     };
-    await putPlayerName(request, 204, requestData);
+    await putPlayerName(request, 204, requestData, apiLogin.username, apiLogin.password);
 
     const getPlayerNameResponse = (await getPlayerName(request)).json();
 
@@ -20,7 +22,8 @@ test.describe('/playerName endpoints', () => {
   });
 
   test('PUT /playerName with bad request @playerName', async ({
-    request
+    request,
+    apiLogin
   }) => {
     const name = `Test Name ${uuidv4()}`;
    
@@ -28,7 +31,7 @@ test.describe('/playerName endpoints', () => {
       'invalid': name,
     };
 
-    await putPlayerName(request, 400, requestData);
+    await putPlayerName(request, 400, requestData, apiLogin.username, apiLogin.password);
   });
 
   test('PUT /playerName with unauthorized request @playerName', async ({

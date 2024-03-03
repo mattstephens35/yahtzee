@@ -2,8 +2,6 @@ import { APIRequestContext, APIResponse, expect } from "@playwright/test";
 import { dieType } from "../enums/dieType";
 
 const url = '/die'
-const user = 'admin'
-const pass = 'snakeeyes'
 
 export async function getDieByIdInteger(
   request: APIRequestContext,
@@ -64,9 +62,9 @@ export async function getDieById(
 export async function putDieById(
   request: APIRequestContext,
   dieRequest: any,
+  username: string,
+  password: string,
   expectedStatusCode: number = 204,
-  username: string = user,
-  password: string = pass,
 ) {
   const credentialsBase64 = btoa(`${username}:${password}`);
 

@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from "../fixtures/fixtures";
 import { getDieById, getDieByIdDots, getDieByIdFloat, getDieByIdInteger, getDieByIdWord, putDieById } from '../resources/die.resources';
 import { dieType } from '../enums/dieType';
 import { returnStatus } from '../enums/returnStatus';
@@ -8,7 +9,8 @@ test.describe('/die endpoints', () => {
 
   for (let i = 0; i < validDieIds.length; i++) {
     test(`PUT and GET /die/${validDieIds[i]} by integer @smoke @die`, async ({
-      request
+      request, 
+      apiLogin
     }) => {
       const rndInt = await getRandomDieValue();
       const requestData = {
@@ -16,7 +18,7 @@ test.describe('/die endpoints', () => {
         'value': rndInt
       };
 
-      await putDieById(request, requestData);
+      await putDieById(request, requestData, apiLogin.username, apiLogin.password);
       const response = (await getDieByIdInteger(request, validDieIds[i])).json();
 
       expect((await response).status).toBe(returnStatus.SUCCESS.valueOf());
@@ -28,7 +30,8 @@ test.describe('/die endpoints', () => {
 
   for (let i = 0; i < validDieIds.length; i++) {
     test(`PUT and GET /die/${validDieIds[i]} by float @smoke @die`, async ({
-      request
+      request,
+      apiLogin
     }) => {
       const rndInt = await getRandomDieValue();
       const requestData = {
@@ -36,7 +39,7 @@ test.describe('/die endpoints', () => {
         'value': rndInt
       };
 
-      await putDieById(request, requestData);
+      await putDieById(request, requestData, apiLogin.username, apiLogin.password);
       const response = (await getDieByIdFloat(request, validDieIds[i])).json();
 
       expect((await response).status).toBe(returnStatus.SUCCESS.valueOf());
@@ -48,7 +51,8 @@ test.describe('/die endpoints', () => {
 
   for (let i = 0; i < validDieIds.length; i++) {
     test(`PUT and GET /die/${validDieIds[i]} by word @smoke @die`, async ({
-      request
+      request,
+      apiLogin
     }) => {
       const rndInt = await getRandomDieValue();
       const requestData = {
@@ -56,7 +60,7 @@ test.describe('/die endpoints', () => {
         'value': rndInt
       };
 
-      await putDieById(request, requestData);
+      await putDieById(request, requestData, apiLogin.username, apiLogin.password);
       const response = (await getDieByIdWord(request, validDieIds[i])).json();
 
       expect((await response).status).toBe(returnStatus.SUCCESS.valueOf());
@@ -68,7 +72,8 @@ test.describe('/die endpoints', () => {
 
   for (let i = 0; i < validDieIds.length; i++) {
     test(`PUT and GET /die/${validDieIds[i]} by dots @smoke @die`, async ({
-      request
+      request,
+      apiLogin
     }) => {
       const rndInt = await getRandomDieValue();
       const requestData = {
@@ -76,7 +81,7 @@ test.describe('/die endpoints', () => {
         'value': rndInt
       };
 
-      await putDieById(request, requestData);
+      await putDieById(request, requestData, apiLogin.username, apiLogin.password);
       const response = (await getDieByIdDots(request, validDieIds[i])).json();
 
       expect((await response).status).toBe(returnStatus.SUCCESS.valueOf());
@@ -110,7 +115,8 @@ test.describe('/die endpoints', () => {
 
   for (let i = 0; i < invalidPutIds.length; i++) {
     test(`PUT /die with invalid id: ${invalidPutIds[i].id} Bad Request @die`, async ({
-      request
+      request,
+      apiLogin
     }) => {
       const invalidIds = [
         { id: 0, failureMessage: 'Die ID must be between 1 and 5' },
@@ -123,7 +129,7 @@ test.describe('/die endpoints', () => {
         'value': rndInt
       };
 
-      const response = (await putDieById(request, requestData, 400)).json();
+      const response = (await putDieById(request, requestData, apiLogin.username, apiLogin.password, 400)).json();
 
       expect((await response).status).toBe(returnStatus.FAILED.valueOf());
       expect((await response).data).toBe(invalidPutIds[i].failureMessage);
@@ -137,7 +143,8 @@ test.describe('/die endpoints', () => {
 
   for (let i = 0; i < invalidPutIds.length; i++) {
     test(`PUT /die with invalid value: ${invalidPutValues[i].value} Bad Request @die`, async ({
-      request
+      request,
+      apiLogin
     }) => {
       const rndInt = await getRandomDieValue();
       const requestData = {
@@ -145,7 +152,7 @@ test.describe('/die endpoints', () => {
         'value': invalidPutValues[i].value
       };
 
-      const response = (await putDieById(request, requestData, 400)).json();
+      const response = (await putDieById(request, requestData, apiLogin.username, apiLogin.password, 400)).json();
 
       expect((await response).status).toBe(returnStatus.FAILED.valueOf());
       expect((await response).data).toBe(invalidPutValues[i].failureMessage);
@@ -161,7 +168,7 @@ test.describe('/die endpoints', () => {
     };
     const failureMessage = 'Incorrect username or password provided'
 
-    const response = (await putDieById(request, requestData, 401, 'blah', 'blah')).json();
+    const response = (await putDieById(request, requestData, 'blah', 'blah', 401)).json();
 
     expect((await response).status).toBe(returnStatus.FAILED.valueOf());
     expect((await response).data).toBe(failureMessage);

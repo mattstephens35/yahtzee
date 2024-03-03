@@ -1,8 +1,6 @@
 import { APIRequestContext, APIResponse, expect } from "@playwright/test";
 
 const url = '/playerName'
-const user = 'admin'
-const pass = 'snakeeyes'
 
 export async function getPlayerName(
   request: APIRequestContext,
@@ -22,8 +20,8 @@ export async function putPlayerName(
   request: APIRequestContext,
   expectedStatusCode: number,
   playerName: any,
-  username: string = user,
-  password: string = pass,
+  username: string,
+  password: string,
 ) {
   const credentialsBase64 = btoa(`${username}:${password}`);
 
